@@ -9,6 +9,7 @@ import ec.edu.ups.ejemplogui.app.ejemplogui_app.modelo.Biblioteca;
 import ec.edu.ups.ejemplogui.app.ejemplogui_app.modelo.Libro;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import javax.swing.ImageIcon;
@@ -193,18 +194,58 @@ public class VentanaBuscarLibro extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtTituloLibroActionPerformed
 
     private void btnBuscarBibliotecaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarBibliotecaActionPerformed
-        int codigo = Integer.parseInt(txtCodigoLibro.getText());
+        // Limpieza de campos previos a la búsqueda para evitar información residual
+    txtTituloLibro.setText("");
+    txtAutorLibro.setText("");
+    txtAnioLibro.setText("");
+    txtDisponibleLibro.setText("");
+    
+    try {
+        // Obtener el código del libro desde el campo de texto.
+        int codigo = Integer.parseInt(txtCodigoLibro.getText().trim());
+        
+        // Llamar al controlador para buscar el libro.
         Libro libro = libroControlador.read(codigo);
+        
+        // Si se encuentra el libro, mostrar los datos en los campos de texto correspondientes.
         if (libro != null) {
             txtTituloLibro.setText(libro.getTitulo());
             txtAutorLibro.setText(libro.getAutor());
-            txtAnioLibro.setText(String.valueOf(libro.getAño()));
+            txtAnioLibro.setText(libro.getAño());
             txtDisponibleLibro.setText(libro.isDisponible() ? "Disponible" : "No disponible");
-            
-            
         } else {
-            JOptionPane.showMessageDialog(this, "No hay un libro con el código proporcionado.");
+            // Si el libro no se encuentra, mostrar un mensaje de error.
+            JOptionPane.showMessageDialog(this, "No se encontró un libro con el código proporcionado.", "Búsqueda fallida", JOptionPane.INFORMATION_MESSAGE);
         }
+    }catch (NumberFormatException e) {
+        // Manejo de error si el código ingresado no es un número.
+        JOptionPane.showMessageDialog(this, "Por favor, ingrese un número de código válido.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
+    }
+// Limpieza de campos previos a la búsqueda para evitar información residual
+    txtTituloLibro.setText("");
+    txtAutorLibro.setText("");
+    txtAnioLibro.setText("");
+    txtDisponibleLibro.setText("");
+    
+    try {
+        // Obtener el código del libro desde el campo de texto.
+        int codigo = Integer.parseInt(txtCodigoLibro.getText().trim());
+        
+        // Llamar al controlador para buscar el libro.
+        Libro libro = libroControlador.read(codigo);
+        
+        if (libro != null) {
+    txtTituloLibro.setText(libro.getTitulo());
+    txtAutorLibro.setText(libro.getAutor()); 
+    txtAnioLibro.setText(libro.getAño()); 
+    txtDisponibleLibro.setText(libro.isDisponible() ? "Disponible" : "No disponible");
+
+        } else {
+            JOptionPane.showMessageDialog(this, "No se encontró un libro con el código proporcionado.", "Búsqueda fallida", JOptionPane.INFORMATION_MESSAGE);
+        }
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Por favor, ingrese un número de código válido.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_btnBuscarBibliotecaActionPerformed
 
     private void txtCodigoLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodigoLibroActionPerformed

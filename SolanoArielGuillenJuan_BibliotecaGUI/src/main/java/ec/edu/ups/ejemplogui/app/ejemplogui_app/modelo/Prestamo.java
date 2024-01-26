@@ -1,5 +1,6 @@
 
 package ec.edu.ups.ejemplogui.app.ejemplogui_app.modelo;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -8,39 +9,42 @@ import java.util.List;
  *
  * @author juanguillenalbarracin
  */
-public class Prestamo implements Prestable {
+public class Prestamo implements Serializable {
+    private static final long serialVersionUID = 1L;
+    private static final int MAX_LENGTH = 10; 
+    private int codigoLibro;    
+    private String codigoUsuario;    
+    private int codigoBiblioteca;    
     private int codigo;
     private Date fechaPrestamo;
     private Date fechaDevolucion;
-    private Usuario usuario;
+    private List<Libro> libros;
+    private List<Usuario> usuarios;    
+    private List<Biblioteca> bibliotecas;
+    private boolean disponible;
     private Biblioteca biblioteca;
     private Libro libro;
-    private boolean disponible;
-
+    private Usuario usuario;
     public Prestamo() {
     }
 
-    public Prestamo(int codigo, Date fechaPrestamo,Date fechaDevolucion,Biblioteca biblioteca, Usuario usuario, Libro libro) {
+    public Prestamo(int codigo, Date fechaPrestamo,Date fechaDevolucion,int codigoLibro, String codigoUsuario, int codigoBiblioteca ) {
         this.codigo = codigo;
         this.fechaPrestamo = fechaPrestamo;
         this.fechaDevolucion = fechaDevolucion;
-        this.libro = libro;
-        this.biblioteca = biblioteca;
-        this.usuario = usuario;
+        this.codigoLibro = codigoLibro;
+        setCodigoUsuario(codigoUsuario);
+        this.codigoBiblioteca = codigoBiblioteca;
+        this.libros = new ArrayList<>();
+        this.usuarios = new ArrayList<>();
+        this.bibliotecas = new ArrayList<>();
         this.disponible = true; 
     }
-    
-    public Prestamo(int codigo, Date fechaPrestamo,Date fechaDevolucion) {
-	this.codigo = codigo;
-	this.fechaPrestamo = fechaPrestamo;
-    }
 
-    public Date getFechaDevolucion() {
-        return fechaDevolucion;
-    }
-
-    public void setFechaDevolucion(Date fechaDevolucion) {
-        this.fechaDevolucion = fechaDevolucion;
+    public Prestamo(Biblioteca biblioteca, Libro libro, Usuario usuario) {
+        this.biblioteca = biblioteca;
+        this.libro = libro;
+        this.usuario = usuario;
     }
 
     public Biblioteca getBiblioteca() {
@@ -57,6 +61,23 @@ public class Prestamo implements Prestable {
 
     public void setLibro(Libro libro) {
         this.libro = libro;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+    
+
+    public Date getFechaDevolucion() {
+        return fechaDevolucion;
+    }
+
+    public void setFechaDevolucion(Date fechaDevolucion) {
+        this.fechaDevolucion = fechaDevolucion;
     }
 
     
@@ -80,47 +101,43 @@ public class Prestamo implements Prestable {
         return fechaPrestamo;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    
-
     public boolean isDisponible() {
         return disponible;
     }
+    public void setCodigoUsuario(String codigoUsuario) {
+        this.codigoUsuario = ajustarLongitud(codigoUsuario);
+}
+
+    public String getCodigoUsuario() {
+        return codigoUsuario;
+}
+
+    public int getCodigoLibro() {
+        return codigoLibro;
+    }
+
+    public void setCodigoLibro(int codigoLibro) {
+        this.codigoLibro = codigoLibro;
+    }
+
+    public int getCodigoBiblioteca() {
+        return codigoBiblioteca;
+    }
+
+    public void setCodigoBiblioteca(int codigoBiblioteca) {
+        this.codigoBiblioteca = codigoBiblioteca;
+    }
 
     
-
-    public void setUsuario(Usuario usuario) {
-	this.usuario = usuario;
-    }
-
-    @Override
-    public void prestar() {
-        if (disponible) {
-            System.out.println("El libro se ha prestado.");
-            disponible = false;
-        } else {
-            System.out.println("El libro no está disponible para préstamo.");
+    
+    
+    private String ajustarLongitud(String input) {
+        if (input == null) input = ""; 
+        if (input.length() > MAX_LENGTH) {
+            return input.substring(0, MAX_LENGTH);
         }
+        return String.format("%1$-" + MAX_LENGTH + "s", input);
     }
-
-    @Override
-    public void devolver() {
-        if (!disponible) {
-            System.out.println("El libro se ha devuelto.");
-            disponible = true;
-        } else {
-            System.out.println("No se puede devolver el libro que no ha sido prestado.");
-        }
-    }
-
-    @Override
-    public String toString() {
-        return "Prestamo{" + "codigo=" + codigo + ", fechaPrestamo=" + fechaPrestamo + ", fechaDevolucion=" + fechaDevolucion + ", usuario=" + usuario + ", biblioteca=" + biblioteca + ", libro=" + libro + ", disponible=" + disponible + '}';
-    }
-
     
 
 }

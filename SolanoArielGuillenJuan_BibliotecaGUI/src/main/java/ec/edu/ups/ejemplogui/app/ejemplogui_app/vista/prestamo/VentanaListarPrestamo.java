@@ -5,7 +5,11 @@
 package ec.edu.ups.ejemplogui.app.ejemplogui_app.vista.prestamo;
 
 import ec.edu.ups.ejemplogui.app.ejemplogui_app.controlador.PrestamoControlador;
+import ec.edu.ups.ejemplogui.app.ejemplogui_app.modelo.Biblioteca;
+import ec.edu.ups.ejemplogui.app.ejemplogui_app.modelo.Libro;
 import ec.edu.ups.ejemplogui.app.ejemplogui_app.modelo.Prestamo;
+import ec.edu.ups.ejemplogui.app.ejemplogui_app.modelo.Usuario;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
@@ -17,10 +21,15 @@ import javax.swing.table.DefaultTableModel;
 public class VentanaListarPrestamo extends javax.swing.JInternalFrame {
 
     private PrestamoControlador prestamoControlador;
+    private Biblioteca biblioteca;
+    private Libro libro;
+    private Usuario usuario;
+    
     
     public VentanaListarPrestamo(PrestamoControlador prestamoControlador) {
         initComponents();
         this.prestamoControlador = prestamoControlador;
+        cargarDatos();
     }
 
     
@@ -61,55 +70,54 @@ public class VentanaListarPrestamo extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
+                .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 573, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(31, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     public void cargarDatos() {
+    // Obtener la lista de préstamos desde el controlador
+    List<Prestamo> prestamos = prestamoControlador.listPrestamos();
     
-        List<Prestamo> prestamos = prestamoControlador.list();
-     
-        DefaultTableModel modelo = new DefaultTableModel();
-        ArrayList<Object> columnas = new ArrayList<Object>();
+    // Crear el modelo de la tabla y definir las columnas
+    DefaultTableModel modelo = new DefaultTableModel();
+    modelo.addColumn("Código");
+    modelo.addColumn("Fecha de Préstamo");
+    modelo.addColumn("Fecha de Devolución");
+    modelo.addColumn("Código Biblioteca");
+    modelo.addColumn("Código Usuario");
+    modelo.addColumn("Código Libro");
+    modelo.addColumn("Disponibilidad");
     
-        columnas.add("Codigo");
-        columnas.add("Fecha Prestamo");
-        columnas.add("Fecha Devolucion");
-        columnas.add("Biblioteca");
-        columnas.add("Usuario");
-        columnas.add("Libro");
-
-
-        for (Object columna : columnas)
-        {
-            modelo.addColumn(columna);
-        }
-        this.tblPrestamos.setModel(modelo);
-
-        ArrayList<Object[]> datos = new ArrayList<Object[]>();
-        for (Prestamo prestamosList : prestamos)
-        {
-            Object[]informacion = new Object[]{prestamosList.getCodigo(),prestamosList.getFechaPrestamo(),prestamosList.getFechaDevolucion(),prestamosList.getBiblioteca(),prestamosList.getUsuario(),prestamosList.getLibro()};
-            datos.add(informacion);
-        }
-
-        for(Object[]datoPersonal : datos)
-        {
-            modelo.addRow(datoPersonal);
-        }
-        tblPrestamos.setModel(modelo);
+    // Formateador de fechas
+    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    
+    // Rellenar el modelo con los datos de los préstamos
+    for (Prestamo prestamo : prestamos) {
+        Object[] fila = new Object[7];
+        fila[0] = prestamo.getCodigo();
+        fila[1] = dateFormat.format(prestamo.getFechaPrestamo());
+        fila[2] = dateFormat.format(prestamo.getFechaDevolucion());
+        fila[3] = prestamo.getCodigoBiblioteca();
+        fila[4] = prestamo.getCodigoUsuario();
+        fila[5] = prestamo.getCodigoLibro();
+        fila[6] = prestamo.isDisponible() ? "Sí" : "No";
+        modelo.addRow(fila);
     }
+    
+    // Asignar el modelo al JTable
+    tblPrestamos.setModel(modelo);
+}
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;

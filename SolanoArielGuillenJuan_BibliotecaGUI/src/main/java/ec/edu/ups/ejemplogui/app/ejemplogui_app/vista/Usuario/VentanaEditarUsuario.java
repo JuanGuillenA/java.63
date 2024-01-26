@@ -221,29 +221,24 @@ public class VentanaEditarUsuario extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtNombreUsuarioActionPerformed
 
     private void btnBuscarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarUsuarioActionPerformed
+String identificacion = txtIdentificacionUsuario.getText();
+    Usuario usuario = usuarioControlador.readUsuario(identificacion); // Asegúrate de que este método exista y funcione correctamente.
+    if(usuario != null) {
+        txtIdentificacionUsuario.setEditable(false);
+        txtNombreUsuario.setText(usuario.getNombre());
+        txtApellidoUsuario.setText(usuario.getApellido());
+        txtTelefonoUsuario.setText(usuario.getTelefono());
+        txtNombreDelUsuario.setText(usuario.getNombreUsuario());
+        txtCorreoUsuario.setText(usuario.getCorreo());
 
-        
-        String identificacion = txtIdentificacionUsuario.getText();
-        Usuario usuario = usuarioControlador.read(identificacion);
-        if(usuario != null) {
-            txtIdentificacionUsuario.setEditable(false);
-            txtNombreUsuario.setText(usuario.getNombre());
-            txtApellidoUsuario.setText(usuario.getApellido());
-            txtTelefonoUsuario.setText(usuario.getTelefono());
-            txtNombreDelUsuario.setText(usuario.getNombreUsuario());
-            txtCorreoUsuario.setText(usuario.getCorreo());
-
-                      
-            txtNombreUsuario.setEditable(true);
-            txtApellidoUsuario.setEditable(true);
-            txtTelefonoUsuario.setEditable(true);
-            txtNombreDelUsuario.setEditable(true);
-            txtCorreoUsuario.setEditable(true);
-
-       
+        txtNombreUsuario.setEditable(true);
+        txtApellidoUsuario.setEditable(true);
+        txtTelefonoUsuario.setEditable(true);
+        txtNombreDelUsuario.setEditable(true);
+        txtCorreoUsuario.setEditable(true);
     } else {
         JOptionPane.showMessageDialog(this, "No se encontraron datos...");
-        }      
+    }      
     }//GEN-LAST:event_btnBuscarUsuarioActionPerformed
 
     private void btnCancelarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarUsuarioActionPerformed
@@ -253,21 +248,16 @@ public class VentanaEditarUsuario extends javax.swing.JInternalFrame {
     private void btnGuardarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarUsuarioActionPerformed
 
         String identificacion = txtIdentificacionUsuario.getText();
+    String nombre = txtNombreUsuario.getText();
+    String apellido = txtApellidoUsuario.getText();
+    String telefono = txtTelefonoUsuario.getText();
+    String nombreUsuario = txtNombreDelUsuario.getText();
+    String correo = txtCorreoUsuario.getText();
 
-        String nombre = txtNombreUsuario.getText();
-        String apellido = txtApellidoUsuario.getText();
-        String telefono = txtTelefonoUsuario.getText();
-        String nombreUsuario = txtNombreDelUsuario.getText();
-        String correo = txtCorreoUsuario.getText();
-
-        Usuario usuario = new Usuario(identificacion, nombre, apellido, telefono,nombreUsuario,correo);
-
-        
-        usuarioControlador.update(identificacion, nombre, apellido, telefono,nombreUsuario,correo);
-        
-        JOptionPane.showMessageDialog(this, "La información de la biblioteca ha sido actualizada.");
-          
-        limpiarDatos();
+    usuarioControlador.updateUsuario(identificacion, nombre, apellido, telefono, nombreUsuario, correo); // Asegúrate de que este método exista y funcione correctamente.
+    
+    JOptionPane.showMessageDialog(this, "La información del usuario ha sido actualizada.");
+    limpiarDatos();
             
         
     }//GEN-LAST:event_btnGuardarUsuarioActionPerformed
@@ -276,17 +266,18 @@ public class VentanaEditarUsuario extends javax.swing.JInternalFrame {
     private void limpiarDatos() {
         
         txtIdentificacionUsuario.setEditable(true);
-        txtNombreUsuario.setEditable(false);
-        txtApellidoUsuario.setEditable(false);
-        txtTelefonoUsuario.setEditable(false);
-        txtNombreDelUsuario.setEditable(false);
-        txtCorreoUsuario.setEditable(false);
+    txtNombreUsuario.setEditable(false);
+    txtApellidoUsuario.setEditable(false);
+    txtTelefonoUsuario.setEditable(false);
+    txtNombreDelUsuario.setEditable(false);
+    txtCorreoUsuario.setEditable(false);
 
-        txtNombreUsuario.setText("");
-        txtApellidoUsuario.setText("");
-        txtTelefonoUsuario.setText("");
-        txtNombreDelUsuario.setText("");
-        txtCorreoUsuario.setText("");
+    txtIdentificacionUsuario.setText("");
+    txtNombreUsuario.setText("");
+    txtApellidoUsuario.setText("");
+    txtTelefonoUsuario.setText("");
+    txtNombreDelUsuario.setText("");
+    txtCorreoUsuario.setText("");
     }
     public void cambiarIdioma(Locale locale) {
         ResourceBundle mensajes = ResourceBundle.getBundle("mensajes.mensajes", locale);

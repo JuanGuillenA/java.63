@@ -5,9 +5,13 @@
 package ec.edu.ups.ejemplogui.app.ejemplogui_app.vista.prestamo;
 
 import ec.edu.ups.ejemplogui.app.ejemplogui_app.controlador.PrestamoControlador;
+import ec.edu.ups.ejemplogui.app.ejemplogui_app.idao.IPrestamoDao;
 import ec.edu.ups.ejemplogui.app.ejemplogui_app.modelo.Biblioteca;
 import ec.edu.ups.ejemplogui.app.ejemplogui_app.modelo.Libro;
+import ec.edu.ups.ejemplogui.app.ejemplogui_app.modelo.Prestamo;
 import ec.edu.ups.ejemplogui.app.ejemplogui_app.modelo.Usuario;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -23,35 +27,34 @@ import javax.swing.JOptionPane;
 public class VentanaCrearPrestamo extends javax.swing.JInternalFrame {
 
     private PrestamoControlador prestamoControlador;
+    private IPrestamoDao prestamoDao;
     
-    public VentanaCrearPrestamo(PrestamoControlador prestamoControlador) {
+    public VentanaCrearPrestamo(PrestamoControlador prestamoControlador,IPrestamoDao prestamoDao) {
         initComponents();
         this.prestamoControlador = prestamoControlador;
-        cargarComboBiblioteca(comboBoxBiblioteca);
-        cargarComboUsuario(comboBoxUsuario);
-        cargarComboLibro(comboBoxLibro);
+        this.prestamoDao = prestamoDao;
+        
         
     }
 
-    
-    
+   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         lblBiblioteca = new javax.swing.JLabel();
-        comboBoxBiblioteca = new javax.swing.JComboBox<>();
         lblCodigo = new javax.swing.JLabel();
         txtCodigoPrestamo = new javax.swing.JTextField();
         lblUsuario = new javax.swing.JLabel();
-        comboBoxUsuario = new javax.swing.JComboBox<>();
         lblLibro = new javax.swing.JLabel();
-        comboBoxLibro = new javax.swing.JComboBox<>();
         btnGuardarLibro = new javax.swing.JButton();
-        fechaInicio = new com.toedter.calendar.JDateChooser();
-        fechaDevolucion = new com.toedter.calendar.JDateChooser();
         lblFechaPrestamo = new javax.swing.JLabel();
         lblFechaDevolucion = new javax.swing.JLabel();
+        txtCodigoPrestamo1 = new javax.swing.JTextField();
+        txtCodigoPrestamo2 = new javax.swing.JTextField();
+        txtCodigoPrestamo3 = new javax.swing.JTextField();
+        txtFecha1 = new javax.swing.JTextField();
+        txtFecha2 = new javax.swing.JTextField();
 
         setClosable(true);
         setIconifiable(true);
@@ -95,112 +98,120 @@ public class VentanaCrearPrestamo extends javax.swing.JInternalFrame {
                             .addComponent(lblLibro))
                         .addGap(38, 38, 38)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(comboBoxLibro, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(comboBoxUsuario, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(comboBoxBiblioteca, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(txtCodigoPrestamo))
-                            .addComponent(btnGuardarLibro))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lblFechaPrestamo))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtCodigoPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnGuardarLibro)
+                                    .addComponent(txtCodigoPrestamo1, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lblFechaPrestamo))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtCodigoPrestamo2, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtCodigoPrestamo3, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(lblFechaDevolucion)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(41, 41, 41)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(fechaInicio, javax.swing.GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE)
-                    .addComponent(fechaDevolucion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(15, 15, 15))
+                    .addComponent(txtFecha1)
+                    .addComponent(txtFecha2, javax.swing.GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE))
+                .addGap(36, 36, 36))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(24, 24, 24)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblCodigo)
-                            .addComponent(txtCodigoPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(9, 9, 9)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblBiblioteca)
-                            .addComponent(comboBoxBiblioteca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblFechaPrestamo)))
-                    .addComponent(fechaInicio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblCodigo)
+                    .addComponent(txtCodigoPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(9, 9, 9)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblBiblioteca)
+                    .addComponent(lblFechaPrestamo)
+                    .addComponent(txtCodigoPrestamo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtFecha1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(comboBoxUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblUsuario))
-                .addGap(8, 8, 8)
+                    .addComponent(lblUsuario)
+                    .addComponent(txtCodigoPrestamo2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(comboBoxLibro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblLibro))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblFechaDevolucion))
-                    .addComponent(fechaDevolucion, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(11, 11, 11)
+                    .addComponent(lblLibro)
+                    .addComponent(txtCodigoPrestamo3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblFechaDevolucion)
+                    .addComponent(txtFecha2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(8, 8, 8)
                 .addComponent(btnGuardarLibro)
-                .addContainerGap(10, Short.MAX_VALUE))
+                .addContainerGap(7, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGuardarLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarLibroActionPerformed
-        int codigo = Integer.parseInt(comboBoxLibro.getSelectedItem().toString());
-        String identificacion = comboBoxUsuario.getSelectedItem().toString();  
-        int codigoBiblioteca = Integer.parseInt(comboBoxBiblioteca.getSelectedItem().toString());
+        // Obtener los valores de los campos de texto
+    String codigoStr = txtCodigoPrestamo.getText().trim();
+    String bibliotecaStr = txtCodigoPrestamo1.getText().trim();
+    String usuarioStr = txtCodigoPrestamo2.getText().trim();
+    String libroStr = txtCodigoPrestamo3.getText().trim();
+    String fechaPrestamoStr = txtFecha1.getText().trim();
+    String fechaDevolucionStr = txtFecha1.getText().trim();
 
-        Biblioteca biblioteca = prestamoControlador.readBiblioteca(codigo);
-        Libro libro = prestamoControlador.readLibro(codigo);
-        Usuario usuario = prestamoControlador.readUsuario(identificacion);
-        Date fechaPrestamo = fechaInicio.getDate();
-        Date fechaDevolucion1 = fechaDevolucion.getDate();
-        int codigoPrestamo = Integer.parseInt(txtCodigoPrestamo.getText());
-           
-        prestamoControlador.create(codigo,fechaPrestamo, fechaDevolucion1,biblioteca, usuario, libro);
-        JOptionPane.showMessageDialog(this, "Prestamo realizado...");
+    // Validar que ningún campo esté vacío
+    if (codigoStr.isEmpty() || bibliotecaStr.isEmpty() || usuarioStr.isEmpty() || libroStr.isEmpty() ||
+        fechaPrestamoStr.isEmpty() || fechaDevolucionStr.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Todos los campos deben ser llenados.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    // Convertir y validar datos
+    try {
+        int codigo = Integer.parseInt(codigoStr);
+        int codigoBiblioteca = Integer.parseInt(bibliotecaStr);
+        int codigoLibro = Integer.parseInt(libroStr);
         
+
+        // Convertir las fechas
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date fechaPrestamo = dateFormat.parse(fechaPrestamoStr);
+        Date fechaDevolucion = dateFormat.parse(fechaDevolucionStr);
+
+        // Verificar que la fecha de devolución no sea antes que la de préstamo
+        if (fechaDevolucion.before(fechaPrestamo)) {
+            JOptionPane.showMessageDialog(this, "La fecha de devolución no puede ser anterior a la fecha de préstamo.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Crear el préstamo
+        Prestamo prestamo = new Prestamo(codigo, fechaPrestamo, fechaDevolucion, codigoLibro, usuarioStr, codigoBiblioteca);
+        prestamoControlador.createPrestamo(codigo, fechaPrestamo, fechaDevolucion, codigoLibro,usuarioStr, codigoBiblioteca);
+
+        JOptionPane.showMessageDialog(this, "Préstamo guardado con éxito.");
+
+        // Limpia los campos después de guardar
         txtCodigoPrestamo.setText("");
-        comboBoxBiblioteca.setSelectedIndex(-1);
-        comboBoxUsuario.setSelectedIndex(-1);
-        comboBoxLibro.setSelectedIndex(-1);
+        txtCodigoPrestamo1.setText("");
+        txtCodigoPrestamo2.setText("");
+        txtCodigoPrestamo3.setText("");
+        txtFecha1.setText("");
+        txtFecha1.setText("");
+        
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Por favor, ingrese números válidos en los campos de código.", "Error", JOptionPane.ERROR_MESSAGE);
+    } catch (ParseException e) {
+        JOptionPane.showMessageDialog(this, "Por favor, ingrese las fechas en el formato dd/MM/yyyy.", "Error", JOptionPane.ERROR_MESSAGE);
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error al guardar el préstamo: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
+        
     }//GEN-LAST:event_btnGuardarLibroActionPerformed
 
     
-    private void cargarComboBiblioteca(JComboBox comboBox)
-    {
-        DefaultComboBoxModel combo = new DefaultComboBoxModel();
-        comboBox.setModel(combo);
-        List<Biblioteca> bibliotecas = prestamoControlador.listBiblioteca();
-        for(Biblioteca biblioteca : bibliotecas)
-        {
-            combo.addElement(biblioteca.getCodigo());
-        }     
-    }
     
-    private void cargarComboUsuario(JComboBox comboBox)
-    {
-        DefaultComboBoxModel combo = new DefaultComboBoxModel();
-        comboBox.setModel(combo);
-        List<Usuario> usuarios = prestamoControlador.listUsuario();
-        for(Usuario usuario : usuarios)
-        {
-            combo.addElement(usuario.getIdentificacion());
-        }     
-    }
-    private void cargarComboLibro(JComboBox comboBox)
-    {
-        DefaultComboBoxModel combo = new DefaultComboBoxModel();
-        comboBox.setModel(combo);
-        List<Libro> libros = prestamoControlador.listLibro();
-        for(Libro libro : libros)
-        {
-            combo.addElement(libro.getCodigo());
-        }     
-    }
     
     public void cambiarIdioma(Locale locale) {
         ResourceBundle mensajes = ResourceBundle.getBundle("mensajes.mensajes", locale);
@@ -221,11 +232,6 @@ public class VentanaCrearPrestamo extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGuardarLibro;
-    private javax.swing.JComboBox<String> comboBoxBiblioteca;
-    private javax.swing.JComboBox<String> comboBoxLibro;
-    private javax.swing.JComboBox<String> comboBoxUsuario;
-    private com.toedter.calendar.JDateChooser fechaDevolucion;
-    private com.toedter.calendar.JDateChooser fechaInicio;
     private javax.swing.JLabel lblBiblioteca;
     private javax.swing.JLabel lblCodigo;
     private javax.swing.JLabel lblFechaDevolucion;
@@ -233,5 +239,10 @@ public class VentanaCrearPrestamo extends javax.swing.JInternalFrame {
     private javax.swing.JLabel lblLibro;
     private javax.swing.JLabel lblUsuario;
     private javax.swing.JTextField txtCodigoPrestamo;
+    private javax.swing.JTextField txtCodigoPrestamo1;
+    private javax.swing.JTextField txtCodigoPrestamo2;
+    private javax.swing.JTextField txtCodigoPrestamo3;
+    private javax.swing.JTextField txtFecha1;
+    private javax.swing.JTextField txtFecha2;
     // End of variables declaration//GEN-END:variables
 }

@@ -7,13 +7,10 @@ import ec.edu.ups.ejemplogui.app.ejemplogui_app.modelo.Biblioteca;
 import ec.edu.ups.ejemplogui.app.ejemplogui_app.modelo.Libro;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.util.HashMap;
-import java.util.List;
+import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
-import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -24,13 +21,14 @@ import javax.swing.JPanel;
 public class VentanaCrearLibro extends javax.swing.JInternalFrame {
     FondoVentana fondo = new FondoVentana();
     private LibroControlador libroControlador;
+    private BibliotecaControlador bibliotecaControlador;
     
     
-    public VentanaCrearLibro( LibroControlador libroControlador) {
+    public VentanaCrearLibro( LibroControlador libroControlador, BibliotecaControlador bibliotecaControlador) {
        this.setContentPane(fondo);
         initComponents();
         this.libroControlador = libroControlador;
-        cargarBibliotecasEnComboBox(comboBoxBiblioteca);
+        this.bibliotecaControlador = bibliotecaControlador;
     }
 
     
@@ -49,9 +47,9 @@ public class VentanaCrearLibro extends javax.swing.JInternalFrame {
         txtAnioLibro = new javax.swing.JTextField();
         btnGuardarLibro = new javax.swing.JButton();
         lblDisponibilidad = new javax.swing.JLabel();
-        txtDisponibilidadLibro = new javax.swing.JTextField();
+        txtDisponibleLibro = new javax.swing.JTextField();
         lblBiblioteca = new javax.swing.JLabel();
-        comboBoxBiblioteca = new javax.swing.JComboBox<>();
+        txtBiblioCodigo = new javax.swing.JTextField();
 
         setClosable(true);
         setIconifiable(true);
@@ -105,14 +103,17 @@ public class VentanaCrearLibro extends javax.swing.JInternalFrame {
                     .addComponent(txtCodigoLibro, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
                     .addComponent(txtAutorLibro, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
                     .addComponent(txtAnioLibro)
-                    .addComponent(txtDisponibilidadLibro))
-                .addGap(34, 34, 34)
-                .addComponent(lblBiblioteca)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(DatosLibroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnGuardarLibro, javax.swing.GroupLayout.PREFERRED_SIZE, 88, Short.MAX_VALUE)
-                    .addComponent(comboBoxBiblioteca, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(83, Short.MAX_VALUE))
+                    .addComponent(txtDisponibleLibro))
+                .addGroup(DatosLibroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(DatosLibroLayout.createSequentialGroup()
+                        .addGap(34, 34, 34)
+                        .addComponent(lblBiblioteca)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                        .addComponent(txtBiblioCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(DatosLibroLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnGuardarLibro, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
         DatosLibroLayout.setVerticalGroup(
             DatosLibroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -122,7 +123,7 @@ public class VentanaCrearLibro extends javax.swing.JInternalFrame {
                     .addComponent(lblCodigo)
                     .addComponent(txtCodigoLibro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblBiblioteca)
-                    .addComponent(comboBoxBiblioteca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtBiblioCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(9, 9, 9)
                 .addGroup(DatosLibroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtTituloLibro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -139,7 +140,7 @@ public class VentanaCrearLibro extends javax.swing.JInternalFrame {
                 .addGap(4, 4, 4)
                 .addGroup(DatosLibroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblDisponibilidad)
-                    .addComponent(txtDisponibilidadLibro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtDisponibleLibro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -165,48 +166,47 @@ public class VentanaCrearLibro extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtCodigoLibroActionPerformed
 
     private void btnGuardarLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarLibroActionPerformed
-        int codigo = Integer.parseInt(txtCodigoLibro.getText());
-        
-        String titulo = txtTituloLibro.getText();
-        String autor = txtAutorLibro.getText();
-        int año = Integer.parseInt(txtAnioLibro.getText());
-        boolean disponible = true;
-        libroControlador.create(codigo,titulo,autor,año,disponible);
-        if(comboBoxBiblioteca.getSelectedItem().toString().isEmpty())
-        {
-             JOptionPane.showMessageDialog(this, "Biblioteca no valida");
-        }else
-        {
-            int codigoBiblioteca = Integer.parseInt(comboBoxBiblioteca.getSelectedItem().toString());
-            libroControlador.addBook(codigoBiblioteca);
+        try {
+            int codigo = Integer.parseInt(txtCodigoLibro.getText().trim());
+            String titulo = txtTituloLibro.getText().trim();
+            String autor = txtAutorLibro.getText().trim();
+            String anio = txtAnioLibro.getText().trim();
+            boolean disponible = Boolean.parseBoolean(txtDisponibleLibro.getText().trim()); 
+
+            // Verificar si se ha ingresado un código de biblioteca y es un número válido
+            if (!txtBiblioCodigo.getText().trim().isEmpty()) {
+                int codigoBiblioteca;
+                try {
+                    codigoBiblioteca = Integer.parseInt(txtBiblioCodigo.getText().trim());
+                } catch (NumberFormatException e) {
+                    throw new Exception("El código de la biblioteca debe ser numérico.");
+                }
+
+                libroControlador.createLibro(codigo, titulo, autor, anio, disponible, codigoBiblioteca);
+                JOptionPane.showMessageDialog(this, "Libro guardado y asociado a la biblioteca correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "Debe ingresar un código de biblioteca válido.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
+            txtCodigoLibro.setText("");
+            txtTituloLibro.setText("");
+            txtAutorLibro.setText("");
+            txtAnioLibro.setText("");
+            txtDisponibleLibro.setText("");
+            txtBiblioCodigo.setText(""); 
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Por favor, ingrese valores numéricos válidos para el código y el año.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
+        } catch (IOException e) {
+        JOptionPane.showMessageDialog(this, "No se pudo acceder o crear el archivo de libros: " + e.getMessage(), "Error de IO", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error inesperado: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-        
-        JOptionPane.showMessageDialog(this, "Se han guarado los datos...");
-        
-                
-        
-        // Limpieza de los campos después de la creación
-        txtCodigoLibro.setText("");
-        txtTituloLibro.setText("");
-        txtAutorLibro.setText("");
-        txtAnioLibro.setText("");
-        txtDisponibilidadLibro.setText("");
-        comboBoxBiblioteca.setSelectedIndex(-1);
-            
     
     
     }//GEN-LAST:event_btnGuardarLibroActionPerformed
         
-    public void cargarBibliotecasEnComboBox(JComboBox comboBox) {
-        DefaultComboBoxModel combo = new DefaultComboBoxModel();
-        comboBox.setModel(combo);
-        List<Biblioteca> bibliotecas = libroControlador.listBiblioteca();
-        for(Biblioteca biblioteca : bibliotecas)
-        {
-            combo.addElement(biblioteca.getCodigo());
-        }
-    }
-public void cambiarIdioma(Locale locale) {
+   
+    public void cambiarIdioma(Locale locale) {
         ResourceBundle mensajes = ResourceBundle.getBundle("mensajes.mensajes", locale);
 
        
@@ -223,13 +223,12 @@ public void cambiarIdioma(Locale locale) {
         btnGuardarLibro.setText(mensajes.getString("btnGuardarLibro"));
         
 
-       
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel DatosLibro;
     private javax.swing.JButton btnGuardarLibro;
-    private javax.swing.JComboBox<String> comboBoxBiblioteca;
     private javax.swing.JLabel lblAnio;
     private javax.swing.JLabel lblAutor;
     private javax.swing.JLabel lblBiblioteca;
@@ -238,8 +237,9 @@ public void cambiarIdioma(Locale locale) {
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JTextField txtAnioLibro;
     private javax.swing.JTextField txtAutorLibro;
+    private javax.swing.JTextField txtBiblioCodigo;
     private javax.swing.JTextField txtCodigoLibro;
-    private javax.swing.JTextField txtDisponibilidadLibro;
+    private javax.swing.JTextField txtDisponibleLibro;
     private javax.swing.JTextField txtTituloLibro;
     // End of variables declaration//GEN-END:variables
 class FondoVentana extends JPanel      

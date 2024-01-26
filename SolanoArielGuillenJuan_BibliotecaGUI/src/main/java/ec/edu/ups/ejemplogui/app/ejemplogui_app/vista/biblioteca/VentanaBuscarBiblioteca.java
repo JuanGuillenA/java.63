@@ -8,6 +8,7 @@ import ec.edu.ups.ejemplogui.app.ejemplogui_app.controlador.BibliotecaControlado
 import ec.edu.ups.ejemplogui.app.ejemplogui_app.modelo.Biblioteca;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import javax.swing.ImageIcon;
@@ -25,6 +26,7 @@ public class VentanaBuscarBiblioteca extends javax.swing.JInternalFrame {
     public VentanaBuscarBiblioteca(BibliotecaControlador bibliotecaControlador) {
         this.setContentPane(fondo);
         initComponents();
+
         this.bibliotecaControlador = bibliotecaControlador;
 
     }
@@ -173,16 +175,31 @@ public class VentanaBuscarBiblioteca extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtNombreBibliotecaActionPerformed
 
     private void btnBuscarBibliotecaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarBibliotecaActionPerformed
-        int codigo = Integer.parseInt(txtCodigoBiblioteca.getText());
-        Biblioteca biblioteca = bibliotecaControlador.read(codigo);
-        if(biblioteca != null) {
-        // Asumiendo que la clase Biblioteca tiene métodos getNombre, getDireccion y getTelefono
+        try {
+    int codigo = Integer.parseInt(txtCodigoBiblioteca.getText().trim());
+    Biblioteca biblioteca = bibliotecaControlador.read(codigo);
+    
+    // Verifica si se encontró la biblioteca
+    if (biblioteca != null) {
+        // Si se encuentra, muestra sus detalles en los campos de texto.
         txtNombreBiblioteca.setText(biblioteca.getNombre());
         txtDireccionBiblioteca.setText(biblioteca.getDireccion());
         txtTelefonoBiblioteca.setText(biblioteca.getTelefono());
     } else {
-        JOptionPane.showMessageDialog(this, "No se encontraron datos...");
-        }       
+        // Si no se encuentra, muestra un mensaje y limpia los campos.
+        JOptionPane.showMessageDialog(this, "No se encontraron datos para el código proporcionado.", "Búsqueda de Biblioteca", JOptionPane.INFORMATION_MESSAGE);
+        txtNombreBiblioteca.setText("");
+        txtDireccionBiblioteca.setText("");
+        txtTelefonoBiblioteca.setText("");
+    }
+} catch (NumberFormatException e) {
+    // Maneja el error de formato en el código ingresado.
+    JOptionPane.showMessageDialog(this, "Por favor, ingrese un código válido.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
+    txtCodigoBiblioteca.requestFocus(); // Devuelve el foco al campo del código.
+} catch (IOException e) {
+    // Maneja errores de IO, por ejemplo, problemas al acceder al archivo de datos.
+    JOptionPane.showMessageDialog(this, "Error al buscar la biblioteca: " + e.getMessage(), "Error de IO", JOptionPane.ERROR_MESSAGE);
+}
     }//GEN-LAST:event_btnBuscarBibliotecaActionPerformed
 
     private void txtCodigoBibliotecaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodigoBibliotecaActionPerformed

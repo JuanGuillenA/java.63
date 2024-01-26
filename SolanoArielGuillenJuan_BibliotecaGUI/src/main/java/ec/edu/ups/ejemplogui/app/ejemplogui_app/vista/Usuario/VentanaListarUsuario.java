@@ -6,8 +6,10 @@ package ec.edu.ups.ejemplogui.app.ejemplogui_app.vista.Usuario;
 
 import ec.edu.ups.ejemplogui.app.ejemplogui_app.controlador.UsuarioControlador;
 import ec.edu.ups.ejemplogui.app.ejemplogui_app.modelo.Usuario;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -75,39 +77,43 @@ public class VentanaListarUsuario extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public void cargarDatos() {
-    
-    List<Usuario> usuarios = usuarioControlador.list();
-     
-    DefaultTableModel modelo = new DefaultTableModel();
-    ArrayList<Object> columnas = new ArrayList<Object>();
-    
-    columnas.add("Identificacion");
-    columnas.add("Nombre");
-    columnas.add("Apellido");
-    columnas.add("Telefono");
-    columnas.add("Nombre Del Usuario");
-    columnas.add("Correo");
-   
-    
-    for (Object columna : columnas)
-    {
-        modelo.addColumn(columna);
+   public void cargarDatos() {
+    try {
+        // Obtener la lista de usuarios
+        List<Usuario> usuarios = usuarioControlador.listUsuarios();
+        
+        // Preparar el modelo de la tabla
+        DefaultTableModel modelo = (DefaultTableModel) tblUsuarios.getModel();
+        modelo.setRowCount(0); // Limpiar la tabla
+        
+        // Definir las columnas si aún no están establecidas
+        if (modelo.getColumnCount() == 0) {
+            modelo.addColumn("Identificación");
+            modelo.addColumn("Nombre");
+            modelo.addColumn("Apellido");
+            modelo.addColumn("Teléfono");
+            modelo.addColumn("Nombre de Usuario");
+            modelo.addColumn("Correo");
+        }
+
+        // Rellenar el modelo con los datos de los usuarios
+        for (Usuario usuario : usuarios) {
+            Object[] fila = new Object[]{
+                usuario.getIdentificacion(),
+                usuario.getNombre(),
+                usuario.getApellido(),
+                usuario.getTelefono(),
+                usuario.getNombreUsuario(),
+                usuario.getCorreo()
+            };
+            modelo.addRow(fila);
+        }
+
+        // Asignar el modelo actualizado a la tabla
+        tblUsuarios.setModel(modelo);
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Error inesperado al cargar los datos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
     }
-    this.tblUsuarios.setModel(modelo);
-    
-    ArrayList<Object[]> datos = new ArrayList<Object[]>();
-    for (Usuario usuarioLista : usuarios)
-    {
-        Object[]informacion = new Object[]{usuarioLista.getIdentificacion(),usuarioLista.getNombre(),usuarioLista.getApellido(),usuarioLista.getTelefono(),usuarioLista.getNombreUsuario(), usuarioLista.getCorreo()};
-        datos.add(informacion);
-    }
-    
-    for(Object[]datoPersonal : datos)
-    {
-        modelo.addRow(datoPersonal);
-    }
-    tblUsuarios.setModel(modelo);
 }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -9,6 +9,7 @@ import ec.edu.ups.ejemplogui.app.ejemplogui_app.modelo.Usuario;
 import ec.edu.ups.ejemplogui.app.ejemplogui_app.vista.Usuario.VentanaBuscarUsuario.FondoVentana;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import javax.swing.ImageIcon;
@@ -202,23 +203,14 @@ public class VentanaEliminarUsuario extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEliminarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarUsuarioActionPerformed
-        int respuesta = JOptionPane.showConfirmDialog(this, "Seguro que quiere eliminar?");
-        if (respuesta == JOptionPane.YES_OPTION) {
-            String identificacion = txtIdentificacionUsuario.getText();
+         int respuesta = JOptionPane.showConfirmDialog(this, "¿Seguro que quiere eliminar?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+    if (respuesta == JOptionPane.YES_OPTION) {
+        String identificacion = txtIdentificacionUsuario.getText();
 
-            Usuario usuarioExistente = usuarioControlador.read(identificacion);
-
-            if (usuarioExistente != null) {
-                usuarioControlador.delete(identificacion);
-
-                JOptionPane.showMessageDialog(this, "La información de la biblioteca ha sido eliminada.");
-
-                limpiarDatos();
-
-            } else {
-                JOptionPane.showMessageDialog(this, "No se encontró una biblioteca con el código proporcionado.");
-            }
-        }
+        usuarioControlador.deleteUsuario(identificacion);
+        JOptionPane.showMessageDialog(this, "Usuario eliminado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        limpiarDatos();
+    }
     }//GEN-LAST:event_btnEliminarUsuarioActionPerformed
 
     private void btnCancelarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarUsuarioActionPerformed
@@ -226,9 +218,9 @@ public class VentanaEliminarUsuario extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnCancelarUsuarioActionPerformed
 
     private void btnBuscarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarUsuarioActionPerformed
-        String identificacion = txtIdentificacionUsuario.getText();
-        Usuario usuario = usuarioControlador.read(identificacion);
-        if(usuario != null) {
+        String identificacion = txtIdentificacionUsuario.getText().trim();
+        Usuario usuario = usuarioControlador.readUsuario(identificacion);
+        if (usuario != null) {
             txtIdentificacionUsuario.setEditable(false);
             txtNombreUsuario.setText(usuario.getNombre());
             txtApellidoUsuario.setText(usuario.getApellido());
@@ -236,14 +228,10 @@ public class VentanaEliminarUsuario extends javax.swing.JInternalFrame {
             txtNombreDelUsuario.setText(usuario.getNombreUsuario());
             txtCorreoUsuario.setText(usuario.getCorreo());
 
-            txtNombreUsuario.setEditable(true);
-            txtApellidoUsuario.setEditable(true);
-            txtTelefonoUsuario.setEditable(true);
-            txtNombreDelUsuario.setEditable(true);
-            txtCorreoUsuario.setEditable(true);
-
+            
         } else {
-            JOptionPane.showMessageDialog(this, "No se encontraron datos...");
+            JOptionPane.showMessageDialog(this, "Usuario no encontrado.", "Búsqueda", JOptionPane.INFORMATION_MESSAGE);
+            limpiarDatos();
         }
     }//GEN-LAST:event_btnBuscarUsuarioActionPerformed
 

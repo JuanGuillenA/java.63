@@ -4,29 +4,39 @@
  */
 package ec.edu.ups.ejemplogui.app.ejemplogui_app.modelo;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  *
  * @author juanguillenalbarracin
  */
-public class Libro implements Prestable{
-    
+public class Libro implements Serializable {
+    private static final long serialVersionUID = 1L;
+    private static final int MAX_LENGTH = 10;
     private int codigo;
     private String titulo;
     private String autor;
-    private int año;
+    private String año;
     private boolean disponible;
 
 
     public Libro(){
     }
 
-    public Libro(int codigo, String titulo, String autor, int año, boolean disponible) {
+    public Libro(int codigo, String titulo, String autor, String año) {
         this.codigo = codigo;
-        this.titulo = titulo;
-        this.autor = autor;
-        this.año = año;
+        setTitulo(titulo);
+        setAutor(autor);
+        setAño(año);    
+    }
+    
+
+    public Libro(int codigo, String titulo, String autor, String año, boolean disponible) {
+        this.codigo = codigo;
+        setTitulo(titulo);
+        setAutor(autor);
+        setAño(año);    
         this.disponible = true;
     }
     
@@ -40,10 +50,6 @@ public class Libro implements Prestable{
         this.titulo = titulo;
         this.autor = autor;
     }
-
-   
-    
-    // Getters y setters de los atributos
     
     
     
@@ -53,7 +59,7 @@ public class Libro implements Prestable{
 
 
     public void setTitulo(String titulo) {
-        this.titulo = titulo;
+        this.titulo = ajustarLongitud(titulo);
     }
 
     public String getAutor() {
@@ -61,16 +67,15 @@ public class Libro implements Prestable{
     }
 
     public void setAutor(String autor) {
-        this.autor = autor;
+        this.autor = ajustarLongitud(autor);
     }
 
-    public int getAño() {
+    public String getAño() {
         return año;
     }
 
-    public void setAño(int año) {
-        this.año = año;
-    }
+    public void setAño(String año) {
+        this.año = ajustarLongitud(año);    }
 
     public boolean getDisponible() {
         return disponible;
@@ -99,17 +104,15 @@ public class Libro implements Prestable{
     public String toString() {
 	return "Libro [titulo=" + titulo + ", autor=" + autor + ", año=" + año + ", disponible=" + disponible + "]";
     }
-
-    @Override
-    public void prestar() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    
+    private String ajustarLongitud(String input) {
+    if (input == null) {
+        input = "";
     }
-
-    @Override
-    public void devolver() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    if (input.length() > MAX_LENGTH) {
+        return input.substring(0, MAX_LENGTH);
     }
-
-   
+    return String.format("%1$-" + MAX_LENGTH + "s", input);
+}
     
 }

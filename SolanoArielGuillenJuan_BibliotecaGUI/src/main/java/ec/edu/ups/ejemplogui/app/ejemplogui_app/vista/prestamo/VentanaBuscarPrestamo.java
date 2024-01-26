@@ -6,6 +6,7 @@ package ec.edu.ups.ejemplogui.app.ejemplogui_app.vista.prestamo;
 
 import ec.edu.ups.ejemplogui.app.ejemplogui_app.controlador.PrestamoControlador;
 import ec.edu.ups.ejemplogui.app.ejemplogui_app.modelo.Prestamo;
+import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import javax.swing.JOptionPane;
@@ -113,15 +114,26 @@ public class VentanaBuscarPrestamo extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBuscarBibliotecaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarBibliotecaActionPerformed
-        int codigo = Integer.parseInt(txtCodigoPrestamo.getText());
-        Prestamo prestamo = prestamoControlador.read(codigo);
-        if(prestamo != null) {
-        txtBiblioteca.setText(prestamo.getBiblioteca().getNombre());
-        txtUsuario.setText(prestamo.getUsuario().getNombre());
-        txtLibro.setText(prestamo.getLibro().getTitulo());
-    } else {
-        JOptionPane.showMessageDialog(this, "No se encontraron datos...");
-        }  
+        try {
+        // Parsea el código ingresado en el campo de texto a un entero.
+        int codigoPrestamo = Integer.parseInt(txtCodigoPrestamo.getText());
+        
+        // Utiliza el controlador para buscar el préstamo con ese código.
+        Prestamo prestamo = prestamoControlador.readPrestamo(codigoPrestamo);
+        
+        // Si se encontró el préstamo, actualiza los campos de texto correspondientes con los códigos.
+        if (prestamo != null) {
+            // Actualiza los campos de texto con los códigos de biblioteca, usuario y libro.
+            txtBiblioteca.setText(String.valueOf(prestamo.getCodigoBiblioteca()));
+            txtUsuario.setText(prestamo.getCodigoUsuario());
+            txtLibro.setText(String.valueOf(prestamo.getCodigoLibro()));
+        } else {
+            JOptionPane.showMessageDialog(this, "No se encontró un préstamo con el código proporcionado.", "Búsqueda fallida", JOptionPane.ERROR_MESSAGE);
+            // Opcional: Limpiar los campos de texto si se desea
+        }
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Por favor, ingrese un código de préstamo válido.", "Error de formato", JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_btnBuscarBibliotecaActionPerformed
 
     public void cambiarIdioma(Locale locale) {

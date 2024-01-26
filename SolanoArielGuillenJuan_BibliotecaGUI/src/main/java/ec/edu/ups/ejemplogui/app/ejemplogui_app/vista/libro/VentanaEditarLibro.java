@@ -447,7 +447,7 @@ public class VentanaEditarLibro extends javax.swing.JInternalFrame {
 
         String titulo = txtTituloLibro.getText();
         String autor = txtAutorLibro.getText();
-        int anio = Integer.parseInt(txtAnioLibro.getText()); 
+        String año = txtAnioLibro.getText();
         String disponibilidad = txtDisponibilidadLibro.getText();
         boolean disponible;
         
@@ -457,10 +457,10 @@ public class VentanaEditarLibro extends javax.swing.JInternalFrame {
         }else {
             disponible = false;
         }
-        Libro libro = new Libro(codigo, titulo, autor, anio,disponible);
+        Libro libro = new Libro(codigo, titulo, autor, año,disponible);
             
         
-        libroControlador.update(codigo, titulo, autor, anio);
+        libroControlador.update(codigo, titulo, autor, año,disponible);
         
             JOptionPane.showMessageDialog(this, "La información de la biblioteca ha sido actualizada.");
             
@@ -482,7 +482,7 @@ public class VentanaEditarLibro extends javax.swing.JInternalFrame {
             txtTituloLibro.setEditable(true);
             txtAutorLibro.setEditable(true);
             txtAnioLibro.setEditable(true);
-            txtDisponibilidadLibro.setEditable(true); // Permite la edición de la disponibilidad
+            txtDisponibilidadLibro.setEditable(false); 
 
        
     } else {

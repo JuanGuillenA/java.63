@@ -67,16 +67,21 @@
                       <Component id="txtCodigoLibro" pref="117" max="32767" attributes="0"/>
                       <Component id="txtAutorLibro" alignment="0" pref="117" max="32767" attributes="0"/>
                       <Component id="txtAnioLibro" alignment="0" max="32767" attributes="0"/>
-                      <Component id="txtDisponibilidadLibro" max="32767" attributes="0"/>
+                      <Component id="txtDisponibleLibro" max="32767" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
-                  <Component id="lblBiblioteca" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="btnGuardarLibro" pref="88" max="32767" attributes="0"/>
-                      <Component id="comboBoxBiblioteca" max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
+                          <Component id="lblBiblioteca" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace pref="29" max="32767" attributes="0"/>
+                          <Component id="txtBiblioCodigo" min="-2" pref="114" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" attributes="0">
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="btnGuardarLibro" min="-2" pref="88" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
-                  <EmptySpace pref="83" max="32767" attributes="0"/>
+                  <EmptySpace pref="34" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -88,7 +93,7 @@
                       <Component id="lblCodigo" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="txtCodigoLibro" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="lblBiblioteca" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="comboBoxBiblioteca" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtBiblioCodigo" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -109,7 +114,7 @@
                   <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="lblDisponibilidad" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtDisponibilidadLibro" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtDisponibleLibro" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
@@ -164,22 +169,14 @@
             <Property name="text" type="java.lang.String" value="Disponibilidad"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="txtDisponibilidadLibro">
+        <Component class="javax.swing.JTextField" name="txtDisponibleLibro">
         </Component>
         <Component class="javax.swing.JLabel" name="lblBiblioteca">
           <Properties>
             <Property name="text" type="java.lang.String" value="Biblioteca"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JComboBox" name="comboBoxBiblioteca">
-          <Properties>
-            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="0"/>
-            </Property>
-          </Properties>
-          <AuxValues>
-            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-          </AuxValues>
+        <Component class="javax.swing.JTextField" name="txtBiblioCodigo">
         </Component>
       </SubComponents>
     </Container>

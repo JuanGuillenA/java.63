@@ -3,15 +3,14 @@ package ec.edu.ups.ejemplogui.app.ejemplogui_app.idao;
 
 import ec.edu.ups.ejemplogui.app.ejemplogui_app.modelo.Biblioteca;
 import ec.edu.ups.ejemplogui.app.ejemplogui_app.modelo.Libro;
+import java.io.IOException;
 import java.util.List;
 
 public interface IBibliotecaDao {
-    List<Biblioteca> list();   
-    Biblioteca read(int codigo);   
-    void createBiblioteca(Biblioteca biblioteca);
-    boolean update(int codigo, Biblioteca biblioteca);
-    boolean delete(int codigo);
-    void createLibro(Libro libro);
-    List<Libro>listLibros();
-    
+    List<Biblioteca> list() throws IOException;
+    Biblioteca read(int codigo) throws IOException;
+    void createBiblioteca(Biblioteca biblioteca) throws IOException;
+    boolean update(int codigo, Biblioteca biblioteca) throws IOException;
+    boolean delete(int codigo) throws IOException;
+
 }

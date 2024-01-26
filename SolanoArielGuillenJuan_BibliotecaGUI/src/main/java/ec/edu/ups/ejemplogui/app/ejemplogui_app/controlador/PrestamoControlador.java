@@ -12,8 +12,10 @@ import ec.edu.ups.ejemplogui.app.ejemplogui_app.modelo.Biblioteca;
 import ec.edu.ups.ejemplogui.app.ejemplogui_app.modelo.Libro;
 import ec.edu.ups.ejemplogui.app.ejemplogui_app.modelo.Prestamo;
 import ec.edu.ups.ejemplogui.app.ejemplogui_app.modelo.Usuario;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -21,81 +23,69 @@ import java.util.List;
  */
 public class PrestamoControlador {
     
-    private IPrestamoDao prestamoDao;
-    private Prestamo prestamo;
-    private IBibliotecaDao bibliotecaDao;
-    private Biblioteca biblioteca;
-    private ILibroDao libroDao;
-    private Libro libro;
-    private IUsuarioDao usuarioDao;
-    private Usuario usuario;
-    
-    
-    public PrestamoControlador (IPrestamoDao prestamoDao,IBibliotecaDao bibliotecaDao,ILibroDao libroDao,IUsuarioDao usuarioDao   ) {
+     private IPrestamoDao prestamoDao;
+
+    public PrestamoControlador(IPrestamoDao prestamoDao) {
         this.prestamoDao = prestamoDao;
-        this.bibliotecaDao = bibliotecaDao;
-        this.libroDao = libroDao;
-        this.usuarioDao = usuarioDao;
     }
-    
-    public void create (int codigo, Date fechaPrestamo, Date fechaDevolucion,Biblioteca biblioteca, Usuario usuario, Libro libro ) {
-        prestamo = new Prestamo (codigo, fechaPrestamo,fechaDevolucion,biblioteca,usuario,libro);
+
+    public void createPrestamo(int codigo, Date fechaPrestamo,Date fechaDevolucion,int codigoLibro, String codigoUsuario, int codigoBiblioteca  ) {
+         Prestamo prestamo = new Prestamo(codigo, fechaPrestamo, fechaDevolucion, codigoLibro,codigoUsuario,codigoBiblioteca);
+    try {
         prestamoDao.create(prestamo);
+        JOptionPane.showMessageDialog(null, "Biblioteca guardada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+    } catch (IOException e) {
+        JOptionPane.showMessageDialog(null, e.getMessage(), "Error al Crear", JOptionPane.ERROR_MESSAGE);
     }
-    
-    public Prestamo read (int codigo) {
-        prestamo = prestamoDao.read(codigo);
-        return prestamo;
     }
-    
-    public void update(int codigo, Date fechaPrestamo, Date fechaDevolucion,Biblioteca biblioteca, Usuario usuario, Libro libro) {
-        Prestamo prestamoExistente = prestamoDao.read(codigo);
 
-        if (prestamoExistente != null) {
-            prestamoExistente.setFechaPrestamo(fechaPrestamo);
-            prestamoExistente.setBiblioteca(biblioteca);
-            prestamoExistente.setUsuario(usuario);
-            prestamoExistente.setLibro(libro);
-
-            prestamoDao.update(codigo, prestamo);
+    public Prestamo readPrestamo(int codigo) {
+        try {
+            return prestamoDao.read(codigo);
+        } catch (IOException e) {
+            System.out.println("Error al leer el prestamo: " + e.getMessage());
+            return null;
         }
     }
-    
-    public Prestamo delete (int codigo) {
-        if (prestamoDao.delete(codigo) == true) {
-            return prestamo;
+
+    public void updatePrestamo(int codigo, Date fechaPrestamo,Date fechaDevolucion,int codigoLibro, String codigoUsuario, int codigoBiblioteca ) {
+        try {
+            Prestamo libroExistente = prestamoDao.read(codigo);
+            if (libroExistente == null) {
+                throw new IOException("El libro con el código " + codigo + " no existe.");
+            }
+            libroExistente.setCodigoBiblioteca(codigoBiblioteca);
+            libroExistente.setCodigoLibro(codigoLibro);
+            libroExistente.setCodigoUsuario(codigoUsuario);
+            libroExistente.setFechaPrestamo(fechaPrestamo);
+            libroExistente.setFechaDevolucion(fechaDevolucion);
+
+            prestamoDao.update(codigo, libroExistente);
+            JOptionPane.showMessageDialog(null, "Libro actualizado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error al actualizar el libro: " + e.getMessage(), "Error de IO", JOptionPane.ERROR_MESSAGE);
         }
-        return null;
     }
-    
-    public List<Prestamo> list() {
-        return prestamoDao.list();
+
+    public void deletePrestamo(int codigo) {
+        try {
+            if (prestamoDao.delete(codigo)) {
+                System.out.println("Prestamo eliminado exitosamente.");
+            } else {
+                System.out.println("No se encontró el prestamo con el código proporcionado.");
+            }
+        } catch (IOException e) {
+            System.out.println("Error al eliminar el prestamo: " + e.getMessage());
+        }
     }
-    
-    public List<Biblioteca> listBiblioteca() {
-        return bibliotecaDao.list();
-    }
-    
-    public List<Usuario> listUsuario() {
-        return usuarioDao.list();
-    }
-    
-    public List<Libro> listLibro() {
-        return libroDao.list();
-    }
-    
-    public Usuario readUsuario (String identificacion) {
-        usuario = usuarioDao.read(identificacion);
-        return usuario;
-    }
-    public Libro readLibro (int codigo) {
-        libro = libroDao.read(codigo);
-        return libro;
-    }
-    public Biblioteca readBiblioteca (int codigo) {
-        biblioteca = bibliotecaDao.read(codigo);
-        return biblioteca;
+
+    public List<Prestamo> listPrestamos() {
+        try {
+            return prestamoDao.list();
+        } catch (IOException e) {
+            System.out.println("Error al listar los prestamos: " + e.getMessage());
+            return null;
+        }
     }
 }
-
 

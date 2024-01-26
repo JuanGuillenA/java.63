@@ -9,6 +9,7 @@ import ec.edu.ups.ejemplogui.app.ejemplogui_app.dao.BibliotecaDao;
 import ec.edu.ups.ejemplogui.app.ejemplogui_app.modelo.Biblioteca;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import javax.swing.ImageIcon;
@@ -167,12 +168,6 @@ public class VentanaEliminarBiblioteca extends javax.swing.JInternalFrame {
 
         lblNombre.setText("Nombre");
 
-        txtCodigoEliminarBiblioteca.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCodigoEliminarBibliotecaActionPerformed(evt);
-            }
-        });
-
         txtNombreEliminarBiblioteca.setEditable(false);
 
         btnEliminarBiblioteca.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Basura.png"))); // NOI18N
@@ -293,46 +288,47 @@ public class VentanaEliminarBiblioteca extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCodigoEditarBibliotecaActionPerformed
 
-    private void txtCodigoEliminarBibliotecaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodigoEliminarBibliotecaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCodigoEliminarBibliotecaActionPerformed
-
     private void btnEliminarBibliotecaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarBibliotecaActionPerformed
-        int respuesta = JOptionPane.showConfirmDialog(this, "Seguro que quiere eliminar?");
-        if (respuesta == JOptionPane.YES_OPTION) {
-            int codigo = Integer.parseInt(txtCodigoEliminarBiblioteca.getText());
-
+        int respuesta = JOptionPane.showConfirmDialog(this, "¿Seguro que quiere eliminar?", "Confirmación", JOptionPane.YES_NO_OPTION);
+    if (respuesta == JOptionPane.YES_OPTION) {
+        try {
+            int codigo = Integer.parseInt(txtCodigoEliminarBiblioteca.getText().trim());
             Biblioteca bibliotecaExistente = bibliotecaControlador.read(codigo);
-
             if (bibliotecaExistente != null) {
                 bibliotecaControlador.delete(codigo);
-
-                JOptionPane.showMessageDialog(this, "La información de la biblioteca ha sido eliminada.");
-
+                JOptionPane.showMessageDialog(this, "La información de la biblioteca ha sido eliminada.", "Eliminación Exitosa", JOptionPane.INFORMATION_MESSAGE);
                 limpiarDatos();
-
             } else {
-                JOptionPane.showMessageDialog(this, "No se encontró una biblioteca con el código proporcionado.");
+                JOptionPane.showMessageDialog(this, "No se encontró una biblioteca con el código proporcionado.", "Biblioteca No Encontrada", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Por favor, ingrese un código válido.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "Error al eliminar la biblioteca: " + e.getMessage(), "Error de IO", JOptionPane.ERROR_MESSAGE);
         }
     }
         
     }//GEN-LAST:event_btnEliminarBibliotecaActionPerformed
 
     private void btnBuscarEliminarBibliotecaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarEliminarBibliotecaActionPerformed
-        int codigo = Integer.parseInt(txtCodigoEliminarBiblioteca.getText());
+         try {
+        int codigo = Integer.parseInt(txtCodigoEliminarBiblioteca.getText().trim());
         Biblioteca biblioteca = bibliotecaControlador.read(codigo);
         if(biblioteca != null) {
-            txtCodigoEliminarBiblioteca.setEditable(false);
             txtNombreEliminarBiblioteca.setText(biblioteca.getNombre());
             txtDireccionEliminarBiblioteca.setText(biblioteca.getDireccion());
             txtTelefonoEliminarBiblioteca.setText(biblioteca.getTelefono());
-            txtNombreEliminarBiblioteca.setEditable(true);
-            txtDireccionEliminarBiblioteca.setEditable(true);
-            txtTelefonoEliminarBiblioteca.setEditable(true);
-
+            txtNombreEliminarBiblioteca.setEditable(false);
+            txtDireccionEliminarBiblioteca.setEditable(false);
+            txtTelefonoEliminarBiblioteca.setEditable(false);
         } else {
-            JOptionPane.showMessageDialog(this, "No se encontraron datos...");
+            JOptionPane.showMessageDialog(this, "No se encontraron datos para el código proporcionado.", "Búsqueda de Biblioteca", JOptionPane.INFORMATION_MESSAGE);
         }
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Por favor, ingrese un código válido.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
+    } catch (IOException e) {
+        JOptionPane.showMessageDialog(this, "Error al buscar la biblioteca: " + e.getMessage(), "Error de IO", JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_btnBuscarEliminarBibliotecaActionPerformed
 
     private void btnCancelarBibliotecaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarBibliotecaActionPerformed
@@ -341,9 +337,7 @@ public class VentanaEliminarBiblioteca extends javax.swing.JInternalFrame {
 
     private void limpiarDatos() {
         txtCodigoEliminarBiblioteca.setEditable(true);
-        txtNombreEliminarBiblioteca.setEditable(false);
-        txtDireccionEliminarBiblioteca.setEditable(false);
-        txtTelefonoEliminarBiblioteca.setEditable(false);
+        txtCodigoEliminarBiblioteca.setText("");
         txtNombreEliminarBiblioteca.setText("");
         txtDireccionEliminarBiblioteca.setText("");
         txtTelefonoEliminarBiblioteca.setText("");

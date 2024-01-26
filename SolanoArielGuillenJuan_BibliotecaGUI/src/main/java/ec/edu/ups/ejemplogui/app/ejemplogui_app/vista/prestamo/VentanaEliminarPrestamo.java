@@ -44,6 +44,11 @@ public class VentanaEliminarPrestamo extends javax.swing.JInternalFrame {
         btnEliminarUsuario = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
 
+        setClosable(true);
+        setIconifiable(true);
+        setMaximizable(true);
+        setResizable(true);
+
         lblCodigo.setText("Codigo");
 
         lblBiblioteca.setText("Biblioteca");
@@ -142,11 +147,11 @@ public class VentanaEliminarPrestamo extends javax.swing.JInternalFrame {
 
     private void btnBuscarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarUsuarioActionPerformed
         int codigo = Integer.parseInt(txtCodigoPrestamo.getText());
-        Prestamo prestamo = prestamoControlador.read(codigo);
+        Prestamo prestamo = prestamoControlador.readPrestamo(codigo);
         if(prestamo != null) {
-            txtBiblioteca.setText(prestamo.getBiblioteca().getNombre());
-            txtUsuario.setText(prestamo.getUsuario().getNombre());
-            txtLibro.setText(prestamo.getLibro().getTitulo());
+            txtBiblioteca.setText(String.valueOf(prestamo.getCodigoBiblioteca()));
+            txtUsuario.setText(prestamo.getCodigoUsuario());
+            txtLibro.setText(String.valueOf(prestamo.getCodigoLibro()));
         } else {
             JOptionPane.showMessageDialog(this, "No se encontraron datos...");
         }
@@ -157,10 +162,10 @@ public class VentanaEliminarPrestamo extends javax.swing.JInternalFrame {
         if (respuesta == JOptionPane.YES_OPTION) {
             int codigo = Integer.parseInt(txtCodigoPrestamo.getText());
 
-            Prestamo prestamoExistente = prestamoControlador.read(codigo);
+            Prestamo prestamoExistente = prestamoControlador.readPrestamo(codigo);
 
             if (prestamoExistente != null) {
-                prestamoControlador.delete(codigo);
+                prestamoControlador.deletePrestamo(codigo);
 
                 JOptionPane.showMessageDialog(this, "La información de la biblioteca ha sido eliminada.");
 

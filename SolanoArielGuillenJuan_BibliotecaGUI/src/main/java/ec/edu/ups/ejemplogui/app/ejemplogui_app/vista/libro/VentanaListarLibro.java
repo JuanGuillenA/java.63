@@ -6,8 +6,10 @@ package ec.edu.ups.ejemplogui.app.ejemplogui_app.vista.libro;
 
 import ec.edu.ups.ejemplogui.app.ejemplogui_app.controlador.LibroControlador;
 import ec.edu.ups.ejemplogui.app.ejemplogui_app.modelo.Libro;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -22,6 +24,7 @@ public class VentanaListarLibro extends javax.swing.JInternalFrame {
     public VentanaListarLibro(LibroControlador libroControlador) {
         initComponents();
         this.libroControlador = libroControlador;
+        cargarDatos();
         
     }
 
@@ -78,35 +81,29 @@ public class VentanaListarLibro extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     public void cargarDatos() {
+    // Obtener la lista de libros desde el controlador
+    List<Libro> libros = libroControlador.listLibros();
     
-    List<Libro> libros = libroControlador.list();
-     
+    // Crear el modelo de la tabla y definir las columnas
     DefaultTableModel modelo = new DefaultTableModel();
-    ArrayList<Object> columnas = new ArrayList<Object>();
+    modelo.addColumn("Código");
+    modelo.addColumn("Título");
+    modelo.addColumn("Autor");
+    modelo.addColumn("Año");
+    modelo.addColumn("Disponibilidad");
     
-    columnas.add("Codigo");
-    columnas.add("Titulo");
-    columnas.add("Autor");
-    columnas.add("Anio");
-    columnas.add("Disponibilidad");
-    
-    for (Object columna : columnas)
-    {
-        modelo.addColumn(columna);
-    }
-    this.tblLibros.setModel(modelo);
-    
-    ArrayList<Object[]> datos = new ArrayList<Object[]>();
-    for (Libro libroListado : libros)
-    {
-        Object[]informacion = new Object[]{libroListado.getCodigo(),libroListado.getTitulo(),libroListado.getAutor(),libroListado.getAño(),libroListado.isDisponible()};
-        datos.add(informacion);
+    // Rellenar el modelo con los datos de los libros
+    for (Libro libro : libros) {
+        Object[] fila = new Object[5];
+        fila[0] = libro.getCodigo();
+        fila[1] = libro.getTitulo();
+        fila[2] = libro.getAutor();
+        fila[3] = libro.getAño();
+        fila[4] = libro.isDisponible() ? "Sí" : "No"; // Asumiendo que isDisponible devuelve un booleano
+        modelo.addRow(fila);
     }
     
-    for(Object[]datoPersonal : datos)
-    {
-        modelo.addRow(datoPersonal);
-    }
+    // Asignar el modelo al JTable
     tblLibros.setModel(modelo);
 }
 

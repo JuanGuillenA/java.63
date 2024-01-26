@@ -9,6 +9,7 @@ import ec.edu.ups.ejemplogui.app.ejemplogui_app.dao.BibliotecaDao;
 import ec.edu.ups.ejemplogui.app.ejemplogui_app.modelo.Biblioteca;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import javax.swing.ImageIcon;
@@ -274,39 +275,45 @@ public class VentanaEditarBiblioteca extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtCodigoEditarActionPerformed
 
     private void btnEditarBibliotecaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarBibliotecaActionPerformed
-        int codigo = Integer.parseInt(txtCodigoEditar.getText());
+        try {
+        int codigo = Integer.parseInt(txtCodigoEditar.getText().trim());
+        String nombre = txtNombreEditar.getText().trim();
+        String direccion = txtDireccionEditar.getText().trim();
+        String telefono = txtTelefonoEditar.getText().trim();
 
-        String nombre = txtNombreEditar.getText();
-        String direccion = txtDireccionEditar.getText();
-        String telefono = txtTelefonoEditar.getText();
-
-        Biblioteca biblioteca = new Biblioteca(codigo, nombre, direccion, telefono);
-
-        
         bibliotecaControlador.update(codigo, nombre, direccion, telefono);
-        
-        JOptionPane.showMessageDialog(this, "La información de la biblioteca ha sido actualizada.");
-          
+
+        JOptionPane.showMessageDialog(this, "La información de la biblioteca ha sido actualizada.", "Actualización Exitosa", JOptionPane.INFORMATION_MESSAGE);
+
         limpiarDatos();
-            
-        
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Por favor, ingrese un número válido para el código.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
+    } catch (IOException e) {
+        JOptionPane.showMessageDialog(this, "Error al actualizar la biblioteca: " + e.getMessage(), "Error de IO", JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_btnEditarBibliotecaActionPerformed
 
     private void btnBuscarEditarBibliotecaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarEditarBibliotecaActionPerformed
-        int codigo = Integer.parseInt(txtCodigoEditar.getText());
+        try {
+        int codigo = Integer.parseInt(txtCodigoEditar.getText().trim());
         Biblioteca biblioteca = bibliotecaControlador.read(codigo);
-        if(biblioteca != null) {
-            txtCodigoEditar.setEditable(false);
+        if (biblioteca != null) {
+            txtCodigoEditar.setEditable(false); // Previene la edición del código
             txtNombreEditar.setText(biblioteca.getNombre());
             txtDireccionEditar.setText(biblioteca.getDireccion());
             txtTelefonoEditar.setText(biblioteca.getTelefono());
+
             txtNombreEditar.setEditable(true);
             txtDireccionEditar.setEditable(true);
             txtTelefonoEditar.setEditable(true);
-       
-    } else {
-        JOptionPane.showMessageDialog(this, "No se encontraron datos...");
-        }      
+        } else {
+            JOptionPane.showMessageDialog(this, "No se encontraron datos para el código proporcionado.", "Búsqueda de Biblioteca", JOptionPane.INFORMATION_MESSAGE);
+        }
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Por favor, ingrese un código válido.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
+    } catch (IOException e) {
+        JOptionPane.showMessageDialog(this, "Error al buscar la biblioteca: " + e.getMessage(), "Error de IO", JOptionPane.ERROR_MESSAGE);
+    }   
     }//GEN-LAST:event_btnBuscarEditarBibliotecaActionPerformed
 
     private void btnCancelarEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarEditarActionPerformed
@@ -319,6 +326,7 @@ public class VentanaEditarBiblioteca extends javax.swing.JInternalFrame {
         txtNombreEditar.setEditable(false);
         txtDireccionEditar.setEditable(false);
         txtTelefonoEditar.setEditable(false);
+        txtCodigoEditar.setText("");
         txtNombreEditar.setText("");
         txtDireccionEditar.setText("");
         txtTelefonoEditar.setText("");

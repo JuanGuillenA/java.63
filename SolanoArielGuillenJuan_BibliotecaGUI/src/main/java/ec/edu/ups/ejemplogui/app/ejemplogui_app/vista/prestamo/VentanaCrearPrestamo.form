@@ -40,28 +40,35 @@
                       </Group>
                       <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="comboBoxLibro" max="32767" attributes="0"/>
-                              <Component id="comboBoxUsuario" max="32767" attributes="0"/>
-                              <Component id="comboBoxBiblioteca" max="32767" attributes="0"/>
-                              <Component id="txtCodigoPrestamo" alignment="0" max="32767" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="txtCodigoPrestamo" alignment="0" min="-2" pref="72" max="-2" attributes="0"/>
+                                  <Component id="btnGuardarLibro" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="txtCodigoPrestamo1" min="-2" pref="72" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="lblFechaPrestamo" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="btnGuardarLibro" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="txtCodigoPrestamo2" min="-2" pref="72" max="-2" attributes="0"/>
+                                  <Component id="txtCodigoPrestamo3" min="-2" pref="72" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          </Group>
                       </Group>
-                      <EmptySpace max="32767" attributes="0"/>
-                      <Component id="lblFechaPrestamo" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       <Component id="lblFechaDevolucion" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="fechaInicio" pref="207" max="32767" attributes="0"/>
-                  <Component id="fechaDevolucion" max="32767" attributes="0"/>
+                  <Component id="txtFecha1" max="32767" attributes="0"/>
+                  <Component id="txtFecha2" pref="157" max="32767" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -69,41 +76,35 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="lblCodigo" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="txtCodigoPrestamo" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="lblBiblioteca" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="comboBoxBiblioteca" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblFechaPrestamo" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
-                  <Component id="fechaInicio" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="lblCodigo" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtCodigoPrestamo" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="lblBiblioteca" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblFechaPrestamo" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtCodigoPrestamo1" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtFecha1" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="comboBoxUsuario" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="lblUsuario" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtCodigoPrestamo2" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Component id="lblLibro" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtCodigoPrestamo3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="lblFechaDevolucion" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtFecha2" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="1" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="comboBoxLibro" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblLibro" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="lblFechaDevolucion" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Component id="fechaDevolucion" min="-2" pref="58" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
               <Component id="btnGuardarLibro" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="10" max="32767" attributes="0"/>
+              <EmptySpace pref="7" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -113,16 +114,6 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Biblioteca"/>
       </Properties>
-    </Component>
-    <Component class="javax.swing.JComboBox" name="comboBoxBiblioteca">
-      <Properties>
-        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="0"/>
-        </Property>
-      </Properties>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="lblCodigo">
       <Properties>
@@ -136,30 +127,10 @@
         <Property name="text" type="java.lang.String" value="Usuario"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JComboBox" name="comboBoxUsuario">
-      <Properties>
-        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="0"/>
-        </Property>
-      </Properties>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-      </AuxValues>
-    </Component>
     <Component class="javax.swing.JLabel" name="lblLibro">
       <Properties>
         <Property name="text" type="java.lang.String" value="Libro"/>
       </Properties>
-    </Component>
-    <Component class="javax.swing.JComboBox" name="comboBoxLibro">
-      <Properties>
-        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="0"/>
-        </Property>
-      </Properties>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-      </AuxValues>
     </Component>
     <Component class="javax.swing.JButton" name="btnGuardarLibro">
       <Properties>
@@ -172,10 +143,6 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGuardarLibroActionPerformed"/>
       </Events>
     </Component>
-    <Component class="com.toedter.calendar.JDateChooser" name="fechaInicio">
-    </Component>
-    <Component class="com.toedter.calendar.JDateChooser" name="fechaDevolucion">
-    </Component>
     <Component class="javax.swing.JLabel" name="lblFechaPrestamo">
       <Properties>
         <Property name="text" type="java.lang.String" value="Fecha Prestamo"/>
@@ -185,6 +152,16 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Fecha Devolucion"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtCodigoPrestamo1">
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtCodigoPrestamo2">
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtCodigoPrestamo3">
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtFecha1">
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtFecha2">
     </Component>
   </SubComponents>
 </Form>

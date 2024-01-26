@@ -6,7 +6,10 @@ package ec.edu.ups.ejemplogui.app.ejemplogui_app.vista.biblioteca;
 
 import ec.edu.ups.ejemplogui.app.ejemplogui_app.controlador.BibliotecaControlador;
 import ec.edu.ups.ejemplogui.app.ejemplogui_app.modelo.Biblioteca;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -96,15 +99,46 @@ public class VentanaListarBiblioteca extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_formInternalFrameActivated
 
-    public void cargarDatos() {
-       List<Biblioteca> bibliotecas = bibliotecaControlador.list();
-        DefaultTableModel modelo = (DefaultTableModel) tblBibliotecas.getModel();
-        modelo.setNumRows(0);
-        for (Biblioteca biblioteca : bibliotecas) {
-          Object [] rowData = {biblioteca.getCodigo(), biblioteca.getNombre(), biblioteca.getDireccion(), biblioteca.getTelefono()};
-          modelo.addRow(rowData);
-        } 
+    public void cargarDatos() throws IOException {
+    List<Biblioteca> bibliotecas = bibliotecaControlador.list();
+    
+    DefaultTableModel modelo = new DefaultTableModel();
+    ArrayList<Object> columnas = new ArrayList<Object>();
+    
+    // Definir las columnas de la tabla
+    columnas.add("Código");
+    columnas.add("Nombre");
+    columnas.add("Dirección");
+    columnas.add("Teléfono");
+    // Agregar columnas para los códigos de los libros
+    //for (int i = 1; i <= 5; i++) {
+        //columnas.add("Código Libro " + i);
+    //}
+    
+    for (Object columna : columnas) {
+        modelo.addColumn(columna);
     }
+    this.tblBibliotecas.setModel(modelo); 
+    
+    for (Biblioteca biblioteca : bibliotecas) {
+        ArrayList<Object> informacion = new ArrayList<>();
+        informacion.add(biblioteca.getCodigo());
+        informacion.add(biblioteca.getNombre());
+        informacion.add(biblioteca.getDireccion());
+        informacion.add(biblioteca.getTelefono());
+        
+        // Agregar los códigos de los libros al ArrayList
+        //int[] codigosLibros = biblioteca.getCodigosLibros();
+        //for (int i = 0; i < 5; i++) {
+          //  informacion.add(i < codigosLibros.length ? codigosLibros[i] : "N/A");
+        //}
+        
+        // Convertir el ArrayList a un array y añadirlo al modelo de la tabla
+        modelo.addRow(informacion.toArray());
+    }
+    
+    tblBibliotecas.setModel(modelo);
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;

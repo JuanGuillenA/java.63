@@ -4,14 +4,17 @@
  */
 package ec.edu.ups.ejemplogui.app.ejemplogui_app.modelo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  *
  * @author juanguillenalbarracin
  */
-public class Usuario {
-    
+public class Usuario implements Serializable {
+    private static final long serialVersionUID = 1L;
+    private static final int MAX_LENGTH = 15; 
+
     private String nombre;
     private String apellido;
     private String identificacion;
@@ -20,23 +23,32 @@ public class Usuario {
     private String correo;
     private ArrayList<Prestamo> prestamos;
     
-    // Constructor super, debido a la herencia entre Usuario y persona 
     public Usuario(String identificacion,String nombre, String apellido,String telefono, String nombreUsuario, String correo) {
-        this.identificacion = identificacion;
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.correo = correo;
-        this.nombreUsuario = nombreUsuario;
+        setIdentificacion(identificacion);
+        setNombre(nombre);
+        setApellido(apellido);
+        setTelefono(telefono);
+        setNombreUsuario(nombreUsuario);
+        setCorreo(correo);
         this.prestamos = new ArrayList<>();
     }
 
-	// Getters y setters de los atributos 
+    public Usuario(String nombre, String apellido, String telefono, String nombreUsuario, String correo) {
+        setNombre(nombre);
+        setApellido(apellido);
+        setTelefono(telefono);
+        setNombreUsuario(nombreUsuario);
+        setCorreo(correo);
+        this.prestamos = prestamos;
+    }
+    
+
     public String getCorreo() {
         return correo;
     }
 
     public void setCorreo(String correo) {
-        this.correo = correo;
+        this.correo = ajustarLongitud(correo);
     }
 
     public String getNombreUsuario() {
@@ -44,7 +56,7 @@ public class Usuario {
     }
 
     public void setNombreUsuario(String nombreUsuario) {
-	this.nombreUsuario = nombreUsuario;
+        this.nombreUsuario = ajustarLongitud(nombreUsuario);
     }
 	
 
@@ -53,7 +65,7 @@ public class Usuario {
     }
 
     public void setNombre(String nombre) {
-        this.nombre = nombre;
+        this.nombre = ajustarLongitud(nombre);
     }
 
     public String getApellido() {
@@ -61,7 +73,7 @@ public class Usuario {
     }
 
     public void setApellido(String apellido) {
-        this.apellido = apellido;
+        this.apellido = ajustarLongitud(apellido);
     }
 
     public String getIdentificacion() {
@@ -69,7 +81,7 @@ public class Usuario {
     }
 
     public void setIdentificacion(String identificacion) {
-        this.identificacion = identificacion;
+        this.identificacion = ajustarLongitud(identificacion);
     }
 
     public String getTelefono() {
@@ -77,11 +89,10 @@ public class Usuario {
     }
 
     public void setTelefono(String telefono) {
-        this.telefono = telefono;
+        this.telefono = ajustarLongitud(telefono);
     }
 
         
-    // Codigo para realizar la composicion y agregar el prestamo a la listaPrestamos
     public void agregarPrestamo(Prestamo prestamo) {
         prestamos.add(prestamo);
     }
@@ -94,7 +105,13 @@ public class Usuario {
         return "Usuario{" + "nombre=" + nombre + ", apellido=" + apellido + ", identificacion=" + identificacion + ", telefono=" + telefono + ", nombreUsuario=" + nombreUsuario + ", correo=" + correo  + ", prestamos=" + prestamos + '}';
     }
     
-    
+    private String ajustarLongitud(String input) {
+        if (input == null) input = ""; 
+        if (input.length() > MAX_LENGTH) {
+            return input.substring(0, MAX_LENGTH);
+        }
+        return String.format("%1$-" + MAX_LENGTH + "s", input);
+    }
     
 }
 

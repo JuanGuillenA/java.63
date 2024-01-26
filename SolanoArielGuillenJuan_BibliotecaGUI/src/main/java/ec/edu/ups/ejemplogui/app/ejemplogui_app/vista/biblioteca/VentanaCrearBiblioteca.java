@@ -7,6 +7,7 @@ package ec.edu.ups.ejemplogui.app.ejemplogui_app.vista.biblioteca;
 import ec.edu.ups.ejemplogui.app.ejemplogui_app.controlador.BibliotecaControlador;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import javax.swing.ImageIcon;
@@ -25,6 +26,8 @@ public class VentanaCrearBiblioteca extends javax.swing.JInternalFrame {
         this.setContentPane(fondo);
         initComponents();
         this.bibliotecaControlador = bibliotecaControlador;
+        cambiarIdioma(Locale.getDefault());
+
     }
 
     
@@ -164,21 +167,40 @@ public class VentanaCrearBiblioteca extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_formCaretPositionChanged
 
     private void btnGuardarBibliotecaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarBibliotecaActionPerformed
-        int codigo = Integer.parseInt(txtCodigoBiblioteca.getText());
-        String nombre = txtNombreBiblioteca.getText();
-        String direccion = txtDireccionBiblioteca.getText();
-        String telefono = txtTelefonoBiblioteca.getText();
-        
-        bibliotecaControlador.create(codigo,nombre,direccion,telefono);
-        JOptionPane.showMessageDialog(this, "Se han guarado los datos...");
-        
+       try {
+        int codigo = Integer.parseInt(txtCodigoBiblioteca.getText().trim());
+        String nombre = txtNombreBiblioteca.getText().trim();
+        String direccion = txtDireccionBiblioteca.getText().trim();
+        String telefono = txtTelefonoBiblioteca.getText().trim();
+
+        if(nombre.isEmpty() || direccion.isEmpty() || telefono.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor, llene todos los campos.", "Campos Incompletos", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        bibliotecaControlador.create(codigo, nombre, direccion, telefono);
+
+        JOptionPane.showMessageDialog(this, "Biblioteca guardada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
         txtCodigoBiblioteca.setText("");
         txtNombreBiblioteca.setText("");
         txtDireccionBiblioteca.setText("");
         txtTelefonoBiblioteca.setText("");
 
+        
+
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Por favor, ingrese un número válido para el código.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
+    } catch (IOException e) {
+        JOptionPane.showMessageDialog(this, e.getMessage(), "Error al Guardar", JOptionPane.ERROR_MESSAGE);
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error al guardar la biblioteca: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
+       
+    
+
     }//GEN-LAST:event_btnGuardarBibliotecaActionPerformed
-public void cambiarIdioma(Locale locale) {
+    public void cambiarIdioma(Locale locale) {
         ResourceBundle mensajes = ResourceBundle.getBundle("mensajes.mensajes", locale);
 
         lblCodigo.setText(mensajes.getString("lblCodigo"));

@@ -7,6 +7,7 @@ package ec.edu.ups.ejemplogui.app.ejemplogui_app.vista.Usuario;
 import ec.edu.ups.ejemplogui.app.ejemplogui_app.controlador.UsuarioControlador;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import javax.swing.ImageIcon;
@@ -24,6 +25,7 @@ public class VentanaCrearUsuario extends javax.swing.JInternalFrame {
         this.setContentPane(fondo);
         initComponents();
         this.usuarioControlador = usuarioControlador;
+        cambiarIdioma(Locale.getDefault());
     }
 
     /**
@@ -40,7 +42,7 @@ public class VentanaCrearUsuario extends javax.swing.JInternalFrame {
         lblNombre = new javax.swing.JLabel();
         lblApellido = new javax.swing.JLabel();
         lblTelefono = new javax.swing.JLabel();
-        txtIdentifiacionUsuario = new javax.swing.JTextField();
+        txtIdentificacionUsuario = new javax.swing.JTextField();
         txtNombreUsuario = new javax.swing.JTextField();
         txtApellidoUsuario = new javax.swing.JTextField();
         txtTelefonoUsuario = new javax.swing.JTextField();
@@ -66,9 +68,9 @@ public class VentanaCrearUsuario extends javax.swing.JInternalFrame {
 
         lblTelefono.setText("Telefono");
 
-        txtIdentifiacionUsuario.addActionListener(new java.awt.event.ActionListener() {
+        txtIdentificacionUsuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtIdentifiacionUsuarioActionPerformed(evt);
+                txtIdentificacionUsuarioActionPerformed(evt);
             }
         });
 
@@ -115,7 +117,7 @@ public class VentanaCrearUsuario extends javax.swing.JInternalFrame {
                                     .addComponent(lblNombre))
                                 .addGap(66, 66, 66)
                                 .addGroup(DatosBibliotecaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtIdentifiacionUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtIdentificacionUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtApellidoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtTelefonoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtNombreUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)))))
@@ -129,7 +131,7 @@ public class VentanaCrearUsuario extends javax.swing.JInternalFrame {
             .addGroup(DatosBibliotecaLayout.createSequentialGroup()
                 .addGap(29, 29, 29)
                 .addGroup(DatosBibliotecaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtIdentifiacionUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtIdentificacionUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblIdentificacion))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(DatosBibliotecaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -176,27 +178,39 @@ public class VentanaCrearUsuario extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtIdentifiacionUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIdentifiacionUsuarioActionPerformed
+    private void txtIdentificacionUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIdentificacionUsuarioActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtIdentifiacionUsuarioActionPerformed
+    }//GEN-LAST:event_txtIdentificacionUsuarioActionPerformed
 
     private void btnGuardadUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardadUsuarioActionPerformed
-        String identificacion = txtIdentifiacionUsuario.getText();
-        String nombre = txtNombreUsuario.getText();
-        String apellido = txtApellidoUsuario.getText();
-        String telefono = txtTelefonoUsuario.getText();
-        String nombreUsuario = txtNombreDelUsuario.getText();
-        String correo = txtCorreoUsuario.getText();
+    String identificacion = txtIdentificacionUsuario.getText().trim();
+    String nombre = txtNombreUsuario.getText().trim();
+    String apellido = txtApellidoUsuario.getText().trim();
+    String telefono = txtTelefonoUsuario.getText().trim();
+    String nombreUsuario = txtNombreDelUsuario.getText().trim();
+    String correo = txtCorreoUsuario.getText().trim().trim();
+    
+    if (identificacion.isEmpty() || nombre.isEmpty() || apellido.isEmpty() ||
+        telefono.isEmpty() || nombreUsuario.isEmpty() || correo.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.", "Campos Incompletos", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+    
+    try {
+        usuarioControlador.createUsuario(identificacion, nombre, apellido, telefono, nombreUsuario, correo);
+        JOptionPane.showMessageDialog(this, "Usuario creado con éxito.", "Usuario Creado", JOptionPane.INFORMATION_MESSAGE);
         
-        usuarioControlador.create(identificacion,nombre,apellido,telefono,nombreUsuario,correo);
-        JOptionPane.showMessageDialog(this, "Se han guarado los datos...");
-        
-        txtIdentifiacionUsuario.setText("");
+        txtIdentificacionUsuario.setText("");
         txtNombreUsuario.setText("");
         txtApellidoUsuario.setText("");
         txtTelefonoUsuario.setText("");
         txtNombreDelUsuario.setText("");
         txtCorreoUsuario.setText("");
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Error en el formato de los datos introducidos.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error inesperado: " + e.getMessage(), "Error Inesperado", JOptionPane.ERROR_MESSAGE);
+    }
 
         
 
@@ -205,10 +219,9 @@ public class VentanaCrearUsuario extends javax.swing.JInternalFrame {
     private void txtNombreUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreUsuarioActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNombreUsuarioActionPerformed
-public void cambiarIdioma(Locale locale) {
+    public void cambiarIdioma(Locale locale) {
         ResourceBundle mensajes = ResourceBundle.getBundle("mensajes.mensajes", locale);
 
-        // Assuming these are JLabels and JButton
         
        
         lblNombre.setText(mensajes.getString("lblNombre"));
@@ -222,9 +235,7 @@ public void cambiarIdioma(Locale locale) {
 
         
         btnGuardadUsuario.setText(mensajes.getString("btnGuardadUsuario"));
-        
-
-       
+  
        
     }
 
@@ -240,7 +251,7 @@ public void cambiarIdioma(Locale locale) {
     private javax.swing.JLabel lblTelefono;
     private javax.swing.JTextField txtApellidoUsuario;
     private javax.swing.JTextField txtCorreoUsuario;
-    private javax.swing.JTextField txtIdentifiacionUsuario;
+    private javax.swing.JTextField txtIdentificacionUsuario;
     private javax.swing.JTextField txtNombreDelUsuario;
     private javax.swing.JTextField txtNombreUsuario;
     private javax.swing.JTextField txtTelefonoUsuario;

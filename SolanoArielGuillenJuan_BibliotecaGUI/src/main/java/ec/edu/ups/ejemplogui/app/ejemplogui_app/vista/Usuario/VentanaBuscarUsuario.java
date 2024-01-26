@@ -8,6 +8,7 @@ import ec.edu.ups.ejemplogui.app.ejemplogui_app.controlador.UsuarioControlador;
 import ec.edu.ups.ejemplogui.app.ejemplogui_app.modelo.Usuario;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import javax.swing.ImageIcon;
@@ -189,19 +190,27 @@ public class VentanaBuscarUsuario extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtNombreUsuarioActionPerformed
 
     private void btnBuscarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarUsuarioActionPerformed
-        String identificacion = txtIdentificacionUsuario.getText();
-        Usuario usuario = usuarioControlador.read(identificacion);
+       String identificacion = txtIdentificacionUsuario.getText().trim();
+    
+    try {
+        Usuario usuario = usuarioControlador.readUsuario(identificacion);
         if(usuario != null) {
-            
             txtNombreUsuario.setText(usuario.getNombre());
             txtApellidoUsuario.setText(usuario.getApellido());
             txtTelefonoUsuario.setText(usuario.getTelefono());
             txtNombreDelUsuario.setText(usuario.getNombreUsuario());
             txtCorreoUsuario.setText(usuario.getCorreo());
-
-        }else {
-        JOptionPane.showMessageDialog(this, "No se encontraron datos...");
-        }    
+        } else {
+            JOptionPane.showMessageDialog(this, "Usuario con la identificación " + identificacion + " no encontrado.", "Usuario No Encontrado", JOptionPane.INFORMATION_MESSAGE);
+            txtNombreUsuario.setText("");
+            txtApellidoUsuario.setText("");
+            txtTelefonoUsuario.setText("");
+            txtNombreDelUsuario.setText("");
+            txtCorreoUsuario.setText("");
+        }
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Por favor, ingrese una identificación válida.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_btnBuscarUsuarioActionPerformed
     
     public void cambiarIdioma(Locale locale) {

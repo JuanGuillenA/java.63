@@ -81,7 +81,7 @@
                                   </Group>
                                   <EmptySpace min="-2" pref="66" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="txtIdentifiacionUsuario" min="-2" pref="117" max="-2" attributes="0"/>
+                                      <Component id="txtIdentificacionUsuario" min="-2" pref="117" max="-2" attributes="0"/>
                                       <Component id="txtApellidoUsuario" min="-2" pref="117" max="-2" attributes="0"/>
                                       <Component id="txtTelefonoUsuario" min="-2" pref="119" max="-2" attributes="0"/>
                                       <Component id="txtNombreUsuario" alignment="0" min="-2" pref="117" max="-2" attributes="0"/>
@@ -103,7 +103,7 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="txtIdentifiacionUsuario" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtIdentificacionUsuario" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="lblIdentificacion" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -159,9 +159,9 @@
             <Property name="text" type="java.lang.String" value="Telefono"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="txtIdentifiacionUsuario">
+        <Component class="javax.swing.JTextField" name="txtIdentificacionUsuario">
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtIdentifiacionUsuarioActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtIdentificacionUsuarioActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="txtNombreUsuario">
